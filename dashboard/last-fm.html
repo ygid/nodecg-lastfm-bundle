@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<style>
+		.monospace {
+			font-family: monospace;
+		}
+	</style>
+</head>
+<body>
+	<div class="ajax lastfm_main" style="width: 610px; height: 101px; margin-left: 0px; color: #fff;">
+        <div class="lastfm_main_bg"></div>
+        <div style='font-size: 22px; position:absolute'>
+            <div class="" style='float:left; padding-right: 20px'>
+                <a class='lastfm_url' href=''><img class="lastfm_img" src="{{ asset('img/lastfm_no_image.png') }}" style="height: 100px; width: 100px"/></a>
+            </div>
+            <div class="" style="width: 470px; height: 99px; text-overflow: ellipsis;  white-space: nowrap; ">
+                <div class="lastfm_artist"   style="text-overflow: ellipsis;  white-space: nowrap;">-</div>
+                <div class="lastfm_album"  style="text-overflow: ellipsis;  white-space: nowrap;" >-</div>
+                <div class="lastfm_song"  style="text-overflow: ellipsis;  white-space: nowrap;">- </div>
+            </div>
+        </div>
+    </div>
+
+	<form id="update-overlay">
+		<label for="overlay-text">Overlay text</label>
+		<input id="overlay-text">
+		<button type="submit">Update</button>
+	</form>
+	<script>
+		const textReplicant = nodecg.Replicant('textReplicant')
+		const textForm = document.getElementById('update-overlay')
+		const textBox = document.getElementById('overlay-text')
+
+		textReplicant.on('change', value=> {
+			document.getElementById('overlay-text').value = value
+		})
+		textReplicant.value = ' ???? '
+		textForm.addEventListener('submit', e => {
+			e.preventDefault();
+			textReplicant.value = textBox.value
+		})
+	</script>
+</body>
+</html>

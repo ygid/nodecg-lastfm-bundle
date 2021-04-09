@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<style>
+		body {
+			font-family: sans-serif;
+		}
+
+		.monospace {
+			font-family: monospace;
+		}
+
+		.lastfm_main {
+			background-color: #333;
+		}
+	</style>
+</head>
+<body>
+	<div class="ajax lastfm_main" style="width: 610px; height: 101px; margin-left: 0px; color: #fff;">
+        <div class="lastfm_main_bg"></div>
+        <div style='font-size: 22px; position:absolute'>
+            <div class="" style='float:left; padding-right: 20px'>
+                <a class='lastfm_url' href=''><img class="lastfm_img" src="{{ asset('img/lastfm_no_image.png') }}" style="height: 100px; width: 100px"/></a>
+            </div>
+            <div class="" style="width: 470px; height: 99px; text-overflow: ellipsis;  white-space: nowrap; ">
+                <div class="lastfm_artist"   style="text-overflow: ellipsis;  white-space: nowrap;">-</div>
+                <div class="lastfm_album"  style="text-overflow: ellipsis;  white-space: nowrap;" >-</div>
+                <div class="lastfm_song"  style="text-overflow: ellipsis;  white-space: nowrap;">- </div>
+            </div>
+        </div>
+    </div>
+	
+	<div id='text-box'>hola</div>
+	<script>
+		const textReplicant = nodecg.Replicant('textReplicant')
+		textReplicant.on('change', value=> {
+			document.getElementById('text-box').innerHTML = value
+		})
+	</script>
+
+</body>
+</html>

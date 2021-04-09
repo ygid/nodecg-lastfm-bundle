@@ -1,0 +1,49 @@
+{
+  "name": "lastfm-bundle",
+  "version": "0.0.0",
+  "description": "Display the song you're currently listening to, using last.fm API",
+  "homepage": "",
+  "author": {
+    "name": "Jonathan Agundez",
+    "email": "admin@ygid.org",
+    "url": ""
+  },
+  "files": [
+    "dashboard",
+    "graphics",
+    "extension.js",
+    "extension"
+  ],
+  "keywords": [
+    "lastfm",
+    "music",
+    "graphics",
+    "nodecg-bundle"
+  ],
+  "browserslist": "last 2 chrome versions",
+  "nodecg": {
+    "compatibleRange": "^1.1.1",
+    "dashboardPanels": [
+      {
+        "name": "last-fm",
+        "title": "Last.fm",
+        "width": 2,
+        "file": "last-fm.html",
+        "headerColor": "#525F78"
+      }
+    ],
+    "graphics": [
+      {
+        "file": "index.html",
+        "width": 1280,
+        "height": 720
+      }
+    ]
+  },
+  "repository": "https://github.com/ygid/ygid-broadcast",
+  "license": "GPL-3.0",
+  "devDependencies": {
+    "jquery": "^3.6.0",
+    "sqlite3": "^5.0.2"
+  }
+}
