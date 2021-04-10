@@ -26,21 +26,40 @@
 	<form id="update-overlay">
 		<label for="overlay-text">Overlay text</label>
 		<input id="overlay-text">
+		<br/>
+		<label for="username-text">Username</label><br/>
+		<input id="username-text">
+		<br/>
+		<label for="apikey-text">API Key</label><br/>
+		<input id="apikey-text">
 		<button type="submit">Update</button>
 	</form>
 	<script>
 		const textReplicant = nodecg.Replicant('textReplicant')
+
+		const usernameReplicant = nodecg.Replicant('USERNAME');
+		const apiKeyReplicant   = nodecg.Replicant('API_KEY');
+
 		const textForm = document.getElementById('update-overlay')
 		const textBox = document.getElementById('overlay-text')
 
 		textReplicant.on('change', value=> {
 			document.getElementById('overlay-text').value = value
 		})
+		usernameReplicant.on('change', value=> {
+			document.getElementById('username-text').value = value
+		})
+		apiKeyReplicant.on('change', value=> {
+			document.getElementById('apikey-text').value = value
+		})
 		textReplicant.value = ' ???? '
 		textForm.addEventListener('submit', e => {
 			e.preventDefault();
 			textReplicant.value = textBox.value
 		})
+
+		nodecg.log.debug(nodecg)
+		
 	</script>
 </body>
 </html>

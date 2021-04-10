@@ -32,11 +32,21 @@
     </div>
 	
 	<div id='text-box'>hola</div>
+	<div id='json-box'>json</div>
 	<script>
 		const textReplicant = nodecg.Replicant('textReplicant')
+		const jsonReplicant = nodecg.Replicant('lastFmResponse')
+
 		textReplicant.on('change', value=> {
 			document.getElementById('text-box').innerHTML = value
 		})
+
+		jsonReplicant.on('change', value=> {
+			document.getElementById('json-box').innerHTML = value
+		})
+
+		
+		
 	</script>
 
 </body>

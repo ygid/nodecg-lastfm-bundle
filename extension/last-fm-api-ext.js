@@ -1,43 +1,36 @@
 module.exports = function (nodecg) {
-	var $ = require('jquery')
+    const { JSDOM } = require( "jsdom" );
+    const { window } = new JSDOM( "" );
+    const $ = require( "jquery" )( window );
     
-    var ROUTE_LASTFM_API     = null;
-    var USERNAME_LASTFM_API  = null;
-    var IMAGE_LASTFM_NOIMAGE = null; // will be a resource from nodecg
+    var LASTFM_API_KEY       = nodecg.Replicant('API_KEY');
+    var LASTFM_USERNAME      = nodecg.Replicant('USERNAME');
+    var IMAGE_LASTFM_NOIMAGE = null;                          // will be a resource from nodecg
 
-	function load_lastfm_api() {
+
+	function load_lastfm_data() {
 
         if (!ROUTE_LASTFM_API || !USERNAME_LASTFM_API) {
+            nodecg.log.debug('NOT ENOUGH DATA')
             return
+        } else {
+            nodecg.log.debug('REQUESTING')
         }
 
-        $.ajax({
-            type: "get",
-            url: ROUTE_LASTFM_API,
-            data: {
-                username: USERNAME_LASTFM_API
-            }
-        }).done(function (response) {
-    
-            console.log(response.content);
-            if (response.content == false) {
-            //    $(".lastfm_img").attr('src', IMAGE_LASTFM_NOIMAGE );
-            //    $(".lastfm_artist").html('-');
-            //    $(".lastfm_album").html('-');
-            //    $(".lastfm_song").html('-');
-            } else {
-                if (response.content.artwork != '') {
-                    $(".lastfm_img").attr('src', response.content.artwork);
-                } else {
-                    $(".lastfm_img").attr('src', IMAGE_LASTFM_NOIMAGE);
-                }
-                $(".lastfm_url").attr('href', response.content.url);
-                $(".lastfm_artist").html(response.content.artist);
-                $(".lastfm_album").html(response.content.album);
-                $(".lastfm_song").html(response.content.trackName);
-            }
-        });
     }
-    load_lastfm_api()
+
+    function makeRequest()
+    {
+        var url = "https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&limit=1&user="
+        +LASTFM_USERNAME+"&api_key="+LASTFM_API_KEY+"&format=json";
+        nodecg.log.debug(url)
+        $.getJSON(url, function(data) {
+            nodecg.log.debug(url)
+            nodecg.Replicant('lastFmResponse', data)
+        });
+
+    }
+    
+    makeRequest()
 };
 
