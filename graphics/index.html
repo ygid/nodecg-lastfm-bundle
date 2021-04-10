@@ -74,7 +74,7 @@
 
 
 		jsonReplicant.on('change', json=> {
-			// console.log(json)
+			console.log(json)
 			var track = json.recenttracks.track[0]
 			var artist = track.artist["#text"]
 			var album = track.album["#text"]

@@ -1,6 +1,6 @@
 module.exports = function (nodecg) {
     var sqlite3 = require('sqlite3').verbose();
-    var db = new sqlite3.Database('bundles/lastfm-bundle/db/last_fm.db');
+    var db = new sqlite3.Database('bundles/nodecg-lastfm-bundle/db/last_fm.db');
 
     nodecg.db = db;
 
