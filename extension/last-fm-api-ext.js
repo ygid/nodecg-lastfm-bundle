@@ -30,7 +30,7 @@ module.exports = function (nodecg) {
         var url = "https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&limit=1&user="
         +LASTFM_USERNAME+"&api_key="+LASTFM_API_KEY+"&format=json";
         $.getJSON(url, function(data) {
-            nodecg.log.debug(url)
+            // nodecg.log.debug(url)
             nodecg.Replicant('lastFmResponse').value = data
         });        
         return

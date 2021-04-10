@@ -41,8 +41,13 @@
     ],
     "assetCategories": [
       {
-        "name": "Default Album Image",
+        "name": "default-album-image",
         "title": "Default Album Image",
+        "allowedTypes": ["jpg", "jpeg", "gif", "png"]
+      },
+      {
+        "name": "background-image",
+        "title": "Background Image",
         "allowedTypes": ["jpg", "jpeg", "gif", "png"]
       }
     ]
