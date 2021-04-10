@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <meta charset="UTF-8">
+	<style>
+		body {
+			font-family: sans-serif;
+		}
+
+		.monospace {
+			font-family: monospace;
+		}
+
+		.lastfm_main {
+			background-color: #333;
+			font-size: 22;
+			line-height: 1.5;
+			font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+		}
+	</style>
+</head>
+<body>
+	<div class="ajax lastfm_main" style="width: 610px; height: 101px; margin-left: 0px; color: #fff;">
+        <div class="lastfm_main_bg"></div>
+        <div style='font-size: 22px; position:absolute'>
+            <div class="" style='float:left; padding-right: 20px'>
+                <a class='lastfm_url' href=''><img id="lastfm_img" class="lastfm_img" src="{{ asset('img/lastfm_no_image.png') }}" style="height: 100px; width: 100px"/></a>
+            </div>
+            <div class="" style="width: 470px; height: 99px; text-overflow: ellipsis;  white-space: nowrap; ">
+                <div id="lastfm_artist"   style="text-overflow: ellipsis;  white-space: nowrap;">-</div>
+                <div id="lastfm_album"  style="text-overflow: ellipsis;  white-space: nowrap;" >-</div>
+                <div id="lastfm_song"  style="text-overflow: ellipsis;  white-space: nowrap;">-</div>
+            </div>
+        </div>
+    </div>
+	
+	<div id='text-box' style="display:none"></div>
+	<div id='json-box' ></div>
+	<script>
+		const textReplicant = nodecg.Replicant('textReplicant')
+		const jsonReplicant = nodecg.Replicant('lastFmResponse')
+		
+		const usernameReplicant = nodecg.Replicant('USERNAME');
+		const apiKeyReplicant   = nodecg.Replicant('API_KEY');
+
+		jsonReplicant.on('change', json=> {
+			// console.log(json)
+			var track = json.recenttracks.track[0]
+			var artist = track.artist["#text"]
+			var album = track.album["#text"]
+			var song = track.name
+			var image = null
+
+			if (!track['@attr'] || !track['@attr'].nowplaying) {
+				artist = '-'
+				album  = '-'
+				song   = '-'
+			}
+
+			if (track.image) {
+				for (var i = 0; i < track.image.length; i++) {
+					if (track.image[i].size == 'extralarge') {
+						console.log("??")
+						image = track.image[i]['#text'];
+					} 
+				}
+			} else {
+				image = ''
+			}
+			// console.log(track.image)
+
+			document.getElementById('lastfm_img').src = image
+			document.getElementById('lastfm_artist').innerHTML = artist
+			document.getElementById('lastfm_album').innerHTML = album
+			document.getElementById('lastfm_song').innerHTML = song
+
+		})
+
+		usernameReplicant.on('change', value=> {
+			updateText()
+		})
+		apiKeyReplicant.on('change', value=> {
+			updateText()
+		})
+		
+		function updateText () {
+			document.getElementById('text-box').innerHTML = 
+				usernameReplicant.value + 
+				' - ' + 
+				apiKeyReplicant.value
+		}
+		
+		// It's probably better to send messages directly to the listener
+		// We use ajax for now
+		const interval = setInterval(function() {
+			$.ajax({
+				type: "get",
+				url: "/lastfm/get",
+			})
+		}, 3000);
+		
+	</script>
+
+</body>
+</html>
