@@ -55,10 +55,13 @@
   "repository": "https://github.com/ygid/ygid-broadcast",
   "license": "GPL-3.0",
   "devDependencies": {
+    "jsdom": "^16.5.2",
     "jquery": "^3.6.0",
     "sqlite3": "^5.0.2"
   },
   "dependencies": {
-    "jsdom": "^16.5.2"
+    "jsdom": "^16.5.2",
+    "jquery": "^3.6.0",
+    "sqlite3": "^5.0.2"
   }
 }
