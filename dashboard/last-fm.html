@@ -7,6 +7,16 @@
 		.monospace {
 			font-family: monospace;
 		}
+		.lastfm_main_bg {
+			background: url("../graphics/img/lastfm_bg2.png");
+			background-position: top;
+			background-size: cover;
+			position: absolute;
+			height:100px;
+			width: 600px;
+			background-repeat: no-repeat;
+			
+		}
 		.lastfm_main {
 			background-color: #333;
 			font-size: 22;
@@ -16,11 +26,11 @@
 	</style>
 </head>
 <body>
-	<div class="ajax lastfm_main" style="width: 610px; height: 101px; margin-left: 0px; color: #fff;">
-        <div class="lastfm_main_bg"></div>
+	<div class="ajax lastfm_main" style="width: 600px; height: 100px; margin-left: 0px; color: #fff;">
+        <div class="lastfm_main_bg" id="lastfm_main_bg"></div>
         <div style='font-size: 22px; position:absolute'>
             <div class="" style='float:left; padding-right: 20px'>
-                <a class='lastfm_url' href=''><img class="lastfm_img" src="" style="height: 100px; width: 100px"/></a>
+                <a class='lastfm_url' href=''><img id="lastfm_img" class="lastfm_img" src="../graphics/img/lastfm_no_image.png" style="height: 100px; width: 100px"/></a>
             </div>
             <div class="" style="width: 470px; height: 99px; text-overflow: ellipsis;  white-space: nowrap; ">
                 <div id="lastfm_artist"   style="text-overflow: ellipsis;  white-space: nowrap;">-</div>
@@ -49,6 +59,24 @@
 		const usernameBox = document.getElementById('username-text')
 		const apiKeyBox = document.getElementById('apikey-text')
 
+		const defaultAlbumImage = nodecg.Replicant('assets:default-album-image');
+		const defaultAlbumImageStorage = '../graphics/img/lastfm_no_image.png'
+		
+		const defaultBackgroundImage = nodecg.Replicant('assets:background-image');
+		const defaultBackgroundImageStorage = '../graphics/img/lastfm_bg2.png'
+
+
+		document.getElementById('lastfm_main_bg').style['background-image'] = 'url("'+defaultBackgroundImageStorage+'")'
+		
+		defaultBackgroundImage.on('change', value=> {
+			var bg = defaultBackgroundImageStorage;
+			if (value[0] != null) {
+				bg = value[0].url
+			}
+			document.getElementById('lastfm_main_bg').style['background-image'] = 'url("'+bg+'")'
+		})
+
+
 		usernameReplicant.on('change', value=> {
 			document.getElementById('username-text').value = value
 		})
@@ -63,18 +91,35 @@
 		})
 
 		jsonReplicant.on('change', json=> {
-			// console.log(json)
 			var track = json.recenttracks.track[0]
 			var artist = track.artist["#text"]
 			var album = track.album["#text"]
 			var song = track.name
-			
+			var image = defaultAlbumImageStorage;
+
+			if (defaultAlbumImage && defaultAlbumImage.value) {
+				if (defaultAlbumImage.value[0] != null) {
+					image = defaultAlbumImage.value[0].url
+				}
+			}
+
 			if (!track['@attr'] || !track['@attr'].nowplaying) {
 				artist = '-'
 				album  = '-'
 				song   = '-'
 			}
 
+			if (track['@attr'] && track['@attr'].nowplaying && track.image) {
+				for (var i = 0; i < track.image.length; i++) {
+					if (track.image[i].size == 'extralarge') {
+						if (track.image[i]['#text'] != ''){
+							image = track.image[i]['#text'];
+						}
+					} 
+				}
+			} 
+
+			document.getElementById('lastfm_img').src = image
 			document.getElementById('lastfm_artist').innerHTML = artist
 			document.getElementById('lastfm_album').innerHTML = album
 			document.getElementById('lastfm_song').innerHTML = song
@@ -87,8 +132,6 @@
 				url: "/lastfm/get",
 			})
 		}, 3000);
-		
-		nodecg.log.debug(nodecg)
 		
 	</script>
 </body>
