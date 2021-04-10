@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="UTF-8">
 	<style>
 		body {
@@ -31,21 +32,43 @@
         </div>
     </div>
 	
-	<div id='text-box'>hola</div>
-	<div id='json-box'>json</div>
+	<div id='text-box' style="display:none"></div>
+	<div id='json-box' ></div>
 	<script>
 		const textReplicant = nodecg.Replicant('textReplicant')
 		const jsonReplicant = nodecg.Replicant('lastFmResponse')
-
-		textReplicant.on('change', value=> {
-			document.getElementById('text-box').innerHTML = value
-		})
+		
+		const usernameReplicant = nodecg.Replicant('USERNAME');
+		const apiKeyReplicant   = nodecg.Replicant('API_KEY');
 
 		jsonReplicant.on('change', value=> {
+			console.log(value)
 			document.getElementById('json-box').innerHTML = value
 		})
 
+		usernameReplicant.on('change', value=> {
+			updateText()
+		})
+		apiKeyReplicant.on('change', value=> {
+			updateText()
+		})
 		
+		function updateText () {
+			document.getElementById('text-box').innerHTML = 
+				usernameReplicant.value + 
+				' - ' + 
+				apiKeyReplicant.value
+		}
+		
+		$.ajax({
+			type: "get",
+			url: "/lastfm/get",
+			data: {
+				
+			}
+		}).done(function (response) {
+
+		})
 		
 	</script>
 
