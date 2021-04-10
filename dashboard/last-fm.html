@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <meta charset="UTF-8">
 	<style>
 		.monospace {
 			font-family: monospace;
+		}
+		.lastfm_main {
+			background-color: #333;
+			font-size: 22;
+			line-height: 1.5;
+			font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
 		}
 	</style>
 </head>
@@ -13,12 +20,12 @@
         <div class="lastfm_main_bg"></div>
         <div style='font-size: 22px; position:absolute'>
             <div class="" style='float:left; padding-right: 20px'>
-                <a class='lastfm_url' href=''><img class="lastfm_img" src="{{ asset('img/lastfm_no_image.png') }}" style="height: 100px; width: 100px"/></a>
+                <a class='lastfm_url' href=''><img class="lastfm_img" src="" style="height: 100px; width: 100px"/></a>
             </div>
             <div class="" style="width: 470px; height: 99px; text-overflow: ellipsis;  white-space: nowrap; ">
-                <div class="lastfm_artist"   style="text-overflow: ellipsis;  white-space: nowrap;">-</div>
-                <div class="lastfm_album"  style="text-overflow: ellipsis;  white-space: nowrap;" >-</div>
-                <div class="lastfm_song"  style="text-overflow: ellipsis;  white-space: nowrap;">- </div>
+                <div id="lastfm_artist"   style="text-overflow: ellipsis;  white-space: nowrap;">-</div>
+                <div id="lastfm_album"  style="text-overflow: ellipsis;  white-space: nowrap;" >-</div>
+                <div id="lastfm_song"  style="text-overflow: ellipsis;  white-space: nowrap;">-</div>
             </div>
         </div>
     </div>
@@ -28,12 +35,16 @@
 		<input id="username-text">
 		<br/>
 		<label for="apikey-text">API Key</label><br/>
-		<input id="apikey-text">
-		<button type="submit">Update</button>
+		<input id="apikey-text" type="password">
+		<button type="submit">Update all</button>
 	</form>
 	<script>
 		const usernameReplicant = nodecg.Replicant('USERNAME');
 		const apiKeyReplicant   = nodecg.Replicant('API_KEY');
+		const jsonReplicant     = nodecg.Replicant('lastFmResponse')
+		
+		const textForm = document.getElementById('update-overlay')
+		const textBox = document.getElementById('overlay-text')
 
 		const usernameBox = document.getElementById('username-text')
 		const apiKeyBox = document.getElementById('apikey-text')
@@ -50,6 +61,32 @@
 			usernameReplicant.value = usernameBox.value
 			apiKeyReplicant.value   = apiKeyBox.value
 		})
+
+		jsonReplicant.on('change', json=> {
+			// console.log(json)
+			var track = json.recenttracks.track[0]
+			var artist = track.artist["#text"]
+			var album = track.album["#text"]
+			var song = track.name
+			
+			if (!track['@attr'] || !track['@attr'].nowplaying) {
+				artist = '-'
+				album  = '-'
+				song   = '-'
+			}
+
+			document.getElementById('lastfm_artist').innerHTML = artist
+			document.getElementById('lastfm_album').innerHTML = album
+			document.getElementById('lastfm_song').innerHTML = song
+
+		})
+		
+		const interval = setInterval(function() {
+			$.ajax({
+				type: "get",
+				url: "/lastfm/get",
+			})
+		}, 3000);
 		
 		nodecg.log.debug(nodecg)
 		

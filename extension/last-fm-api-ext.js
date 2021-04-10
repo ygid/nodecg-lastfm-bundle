@@ -32,7 +32,7 @@ module.exports = function (nodecg) {
         $.getJSON(url, function(data) {
             nodecg.log.debug(url)
             nodecg.Replicant('lastFmResponse').value = data
-        });
+        });        
         return
     }
     

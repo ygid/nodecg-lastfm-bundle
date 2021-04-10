@@ -27,7 +27,7 @@
       {
         "name": "last-fm",
         "title": "Last.fm",
-        "width": 2,
+        "width": 5,
         "file": "last-fm.html",
         "headerColor": "#525F78"
       }
@@ -37,6 +37,13 @@
         "file": "index.html",
         "width": 1280,
         "height": 720
+      }
+    ],
+    "assetCategories": [
+      {
+        "name": "Default Album Image",
+        "title": "Default Album Image",
+        "allowedTypes": ["jpg", "jpeg", "gif", "png"]
       }
     ]
   },
