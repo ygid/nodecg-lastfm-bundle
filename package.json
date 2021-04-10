@@ -1,5 +1,5 @@
 {
-  "name": "lastfm-bundle",
+  "name": "node-lastfm-bundle",
   "version": "0.0.0",
   "description": "Display the song you're currently listening to, using last.fm API",
   "homepage": "",
